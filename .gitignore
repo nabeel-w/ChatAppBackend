@@ -1,0 +1,5 @@
+/node_modules
+/Public
+
+.env*.local
+.env
