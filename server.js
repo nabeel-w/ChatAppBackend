@@ -91,6 +91,10 @@ io.on('connection', socket => {
         io.to(recepientId).emit('newMessage',(msg));
     })
 
+    socket.on('exchangeKey', (key, recepientId)=>{
+        io.to(recepientId).emit('handleKey',(key));
+    })
+
     socket.on('isTyping', (recepientId, Typing)=>{
         io.to(recepientId).emit('typing',(Typing));
     })
