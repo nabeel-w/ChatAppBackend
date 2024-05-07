@@ -43,6 +43,12 @@ const handleDisconnect=(socket)=>{
 
 
 io.on('connection', socket => {
+    const apiKey = socket.handshake.query.apiKey;
+    if(apiKey!==process.env.SERVER_SECRET_KEY){
+        console.log(`Unauthorized connection attempt with API key: ${apiKey}`);
+        socket.disconnect(true);
+        return;
+    }
     console.log('User connected:', socket.id);
 
     socket.on('joinRandomRoom', interests => {
