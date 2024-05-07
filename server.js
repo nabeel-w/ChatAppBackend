@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
+const APIKey= process.env.SERVER_SECRET_KEY;
 
 const io = new Server(PORT, {
     cors: {
@@ -44,7 +45,7 @@ const handleDisconnect=(socket)=>{
 
 io.on('connection', socket => {
     const apiKey = socket.handshake.query.apiKey;
-    if(apiKey!==process.env.SERVER_SECRET_KEY){
+    if(apiKey!==APIKey){
         console.log(`Unauthorized connection attempt with API key: ${apiKey}`);
         socket.disconnect(true);
         return;
