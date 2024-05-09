@@ -18,6 +18,8 @@ const io = new Server(PORT, {
 
 const rooms = [];
 
+const users = new Map();
+
 const haveCommonElement = (arr1, arr2) => {
     return arr1.some(element => arr2.includes(element));
 };
@@ -91,7 +93,10 @@ io.on('connection', socket => {
     socket.on('leaveRoom',()=>{ handleDisconnect(socket) })
 
 
-    socket.on('disconnect', () => { handleDisconnect(socket) })
+    socket.on('disconnect', () => { 
+        handleDisconnect(socket)
+        users.delete(socket.id);
+    })
 
     socket.on('sendMessage',(msg,recepientId)=>{
         console.log("User ID: ",socket.id,"Message: ",msg);
@@ -104,6 +109,10 @@ io.on('connection', socket => {
 
     socket.on('isTyping', (recepientId, Typing)=>{
         io.to(recepientId).emit('typing',(Typing));
+    })
+
+    socket.on('userCredential', (fcmToken)=>{
+        users.set( socket.id, fcmToken )
     })
 
 })
