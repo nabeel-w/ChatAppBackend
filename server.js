@@ -20,6 +20,8 @@ const rooms = [];
 
 const users = new Map();
 
+//blacklist Set
+
 const haveCommonElement = (arr1, arr2) => {
     return arr1.some(element => arr2.includes(element));
 };
@@ -113,6 +115,10 @@ io.on('connection', socket => {
 
     socket.on('userCredential', (fcmToken)=>{
         users.set( socket.id, fcmToken )
+    })
+
+    socket.on('reportUser',(userId, message)=>{
+        console.log(userId,message);
     })
 
 })
